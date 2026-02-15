@@ -29,8 +29,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
   <style>
     :root{
       --bg1:#05050a;--bg2:#0f001a;--bg3:#1a0028;
@@ -221,18 +219,11 @@
       min-height:var(--pay-card-height);
       transform-style:preserve-3d;
     }
-    .pack-card:before{
-      content:"";position:absolute;inset:0;
-      background:linear-gradient(135deg, rgba(255,215,0,.05) 0%, transparent 100%);
-      opacity:0;transition:opacity .3s ease;
-    }
     .pack-card:hover:not(.purchased){
       transform:translateY(-4px) scale(1.02) translateZ(8px);
       border-color:rgba(255,215,0,.55);
       box-shadow:0 16px 44px rgba(0,0,0,.35), 0 0 30px rgba(255,215,0,.15);
     }
-    .pack-card:hover:before{opacity:1;}
-    
     .pack-card.selected{
       border-color:rgba(255,215,0,.90);
       background:linear-gradient(135deg, rgba(255,215,0,.16) 0%, rgba(255,107,53,.12) 100%);
@@ -299,9 +290,6 @@
     @keyframes checkPop{0%{transform:scale(0) rotate(-180deg);opacity:0;}50%{transform:scale(1.3) rotate(10deg);}100%{transform:scale(1) rotate(0);opacity:1;}}
     .error-message{color:var(--error);font-size:12px;margin-top:6px;font-weight:600;display:none;animation:slideDown .3s ease;}
     @keyframes slideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
-    .error-message.show{display:block;}
-
-    .hint{color:var(--muted2);font-size:12px;margin-top:10px;line-height:1.45;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,.3);}
 
     .qr-section{margin:16px 0}
     .qr-card{
@@ -314,31 +302,15 @@
     }
     .qr-title{font-weight:900;color:rgba(255,255,255,.92);font-size:14px;margin-bottom:12px;letter-spacing:.2px;text-align:center;text-shadow:0 2px 4px rgba(0,0,0,.3);}
     
-    .qr-skeleton{
-      width:204px;height:204px;margin:0 auto 12px;border-radius:16px;
-      background:linear-gradient(90deg, rgba(255,255,255,.05) 0%, rgba(255,255,255,.1) 50%, rgba(255,255,255,.05) 100%);
-      background-size:200% 100%;
-      animation:skeletonLoading 1.5s ease-in-out infinite;
-    }
-    @keyframes skeletonLoading{
-      0%{background-position:200% 0;}
-      100%{background-position:-200% 0;}
-    }
-    
     .qr-box{
-      width:204px;height:204px;margin:0 auto 12px;border-radius:16px;
+      width:220px;height:220px;margin:0 auto 12px;border-radius:16px;
       display:flex;align-items:center;justify-content:center;
       background:rgba(255,255,255,.08);
       border:1.5px solid rgba(255,255,255,.16);
       overflow:hidden;
       box-shadow:0 8px 24px rgba(0,0,0,.3), inset 0 2px 8px rgba(0,0,0,.1);
     }
-    /* Fixed canvas scaling for other browsers */
-    .qr-box canvas, .qr-box img {
-        width: 100% !important;
-        height: 100% !important;
-        display: block !important;
-    }
+    .qr-box img{width:100%;height:100%;object-fit:contain;padding:10px;background:#fff;}
     
     .qr-timer{
       text-align:center;margin:8px 0;
@@ -367,15 +339,6 @@
       position:relative;overflow:hidden;
       min-height:48px;
     }
-    .copy-btn:before{
-      content:"";position:absolute;inset:0;
-      background:linear-gradient(135deg, transparent 0%, rgba(255,255,255,.2) 50%, transparent 100%);
-      transform:translateX(-100%);
-      transition:transform .5s ease;
-    }
-    .copy-btn:hover:before{transform:translateX(100%);}
-    .copy-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(255,215,0,.25);}
-    .copy-btn:active{transform:scale(.98);}
 
     .security-badges{display:flex;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap;}
     .security-badge{
@@ -398,17 +361,6 @@
       min-height:180px;
       display:flex;flex-direction:column;align-items:center;justify-content:center;
     }
-    .file-upload-area:hover{
-      border-color:rgba(255,215,0,1);
-      background:linear-gradient(135deg, rgba(255,215,0,.16) 0%, rgba(255,215,0,.08) 100%);
-      transform:translateY(-2px);
-      box-shadow:0 8px 24px rgba(255,215,0,.15);
-    }
-    .file-upload-area.dragover{
-      border-color:var(--mint);
-      background:linear-gradient(135deg, rgba(0,255,136,.16) 0%, rgba(0,255,136,.08) 100%);
-      transform:scale(1.02);
-    }
     .upload-progress{position:absolute;bottom:0;left:0;height:4px;background:linear-gradient(90deg, var(--gold-bright) 0%, var(--orange) 100%);border-radius:0 0 18px 18px;width:0;transition:width .3s ease;box-shadow:0 0 10px rgba(255,215,0,.5);}
     .upload-success-icon{font-size:48px;color:var(--success);animation:checkPop .5s cubic-bezier(.68,-.55,.265,1.55);display:none;}
     #screenshotPreview{max-width:100%;max-height:220px;border-radius:16px;margin-top:14px;display:none;border:2px solid rgba(255,255,255,.15);box-shadow:0 8px 24px rgba(0,0,0,.3);}
@@ -424,20 +376,14 @@
       max-width:320px;z-index:1000;
       animation:slideInLeft .4s ease-out;
     }
-    @keyframes slideInLeft{
-      from{opacity:0;transform:translateX(-100%);}
-      to{opacity:1;transform:translateX(0);}
-    }
     .social-proof-avatar{
       width:40px;height:40px;border-radius:50%;
       background:linear-gradient(135deg, var(--orange) 0%, var(--purple) 100%);
       display:flex;align-items:center;justify-content:center;
       font-weight:900;color:#fff;font-size:16px;
-      box-shadow:0 4px 12px rgba(255,107,53,.3);
     }
     .social-proof-text{flex:1;font-size:12px;line-height:1.4;}
-    .social-proof-name{font-weight:800;color:#fff;margin-bottom:2px;}
-    .social-proof-action{color:var(--muted);font-weight:600;}
+    .social-proof-name{font-weight:800;color:#fff;}
     .social-proof-uc{color:var(--gold-bright);font-weight:800;}
 
     .btn-row{display:flex;gap:12px;}
@@ -445,25 +391,14 @@
       padding:16px 16px;border:none;border-radius:16px;font-size:15px;font-weight:900;cursor:pointer;
       transition:all .26s ease;width:100%;position:relative;min-height:56px;
       overflow:hidden;
-      box-shadow:inset 0 1px 2px rgba(255,255,255,.1);
     }
-    .btn:before{
-      content:"";position:absolute;inset:0;
-      background:linear-gradient(135deg, transparent 0%, rgba(255,255,255,.1) 50%, transparent 100%);
-      transform:translateX(-100%);
-      transition:transform .5s ease;
-    }
-    .btn:hover:before{transform:translateX(100%);}
     .btn-primary{
       background:linear-gradient(135deg, var(--gold-bright) 0%, var(--orange) 100%);
       color:#1a0800;
       box-shadow:0 12px 32px rgba(255,215,0,.30), inset 0 1px 2px rgba(255,255,255,.3);
     }
-    .btn-primary:hover:not(:disabled){transform:translateY(-2px) scale(1.01);box-shadow:0 16px 40px rgba(255,215,0,.35), inset 0 1px 2px rgba(255,255,255,.4);}
     .btn-secondary{background:linear-gradient(135deg, rgba(255,255,255,.09) 0%, rgba(255,255,255,.04) 100%);color:#fff;border:1.5px solid rgba(255,255,255,.16);}
-    .btn-secondary:hover:not(:disabled){background:linear-gradient(135deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.08) 100%);transform:translateY(-2px);}
-    .btn:disabled{opacity:.45;cursor:not-allowed;transform:none!important;}
-    .btn.loading{pointer-events:none;color:transparent;}
+    .btn:disabled{opacity:.45;cursor:not-allowed;}
     .btn.loading:after{content:"";position:absolute;width:18px;height:18px;top:50%;left:50%;margin:-9px 0 0 -9px;border:3px solid transparent;border-top-color:currentColor;border-radius:50%;animation:buttonSpin .8s linear infinite;}
     @keyframes buttonSpin{to{transform:rotate(360deg);}}
 
@@ -479,54 +414,21 @@
     .sticky-btn-wrap.show{display:block;animation:slideInUp .3s ease-out;}
 
     .success-screen{text-align:center;padding:32px 12px 12px;}
-    .success-icon{font-size:76px;color:var(--mint);margin-bottom:14px;animation:successPop .6s cubic-bezier(.68,-.55,.265,1.55);position:relative;}
-    @keyframes successPop{0%{transform:scale(0) rotate(-180deg);opacity:0;}50%{transform:scale(1.2) rotate(10deg);}100%{transform:scale(1) rotate(0);opacity:1;}}
-    .success-title{
-      font-size:24px;font-weight:900;margin-bottom:10px;
-      background:linear-gradient(135deg, var(--mint) 0%, #00d98f 60%, var(--cyan) 100%);
-      background-size:200% 200%;
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-      animation:gradientShift 3s ease infinite;
-    }
-    .delivery-badge{
-      display:inline-flex;align-items:center;gap:8px;padding:10px 16px;
-      background:linear-gradient(135deg, rgba(0,255,136,.15) 0%, rgba(0,217,255,.12) 100%);
-      border:1.5px solid rgba(0,255,136,.4);
-      border-radius:12px;margin:14px 0;font-weight:800;font-size:13px;
-      color:rgba(255,255,255,.95);
-      animation:deliveryPulse 2s ease-in-out infinite;
-      box-shadow:0 8px 24px rgba(0,255,136,.15);
-    }
-    @keyframes deliveryPulse{
-      0%,100%{box-shadow:0 8px 24px rgba(0,255,136,.15), 0 0 0 0 rgba(0,255,136,.4);}
-      50%{box-shadow:0 8px 24px rgba(0,255,136,.25), 0 0 0 8px rgba(0,255,136,0);}
-    }
+    .success-icon{font-size:76px;color:var(--mint);margin-bottom:14px;}
+    .success-title{font-size:24px;font-weight:900;margin-bottom:10px;background:linear-gradient(135deg, var(--mint) 0%, #00d98f 60%, var(--cyan) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 
     .receipt-box{
       background:rgba(0,0,0,.35);
       border:1.5px solid rgba(255,255,255,.18);
       border-radius:16px;padding:16px;margin-top:16px;
       text-align:left;
-      box-shadow:inset 0 2px 8px rgba(0,0,0,.2);
     }
-    .receipt-title{font-weight:900;font-size:14px;color:var(--gold-bright);margin-bottom:12px;display:flex;align-items:center;gap:8px;text-shadow:0 2px 4px rgba(255,215,0,.3);}
     .receipt-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,.1);font-size:13px;}
-    .receipt-row:last-child{border-bottom:none;}
     .receipt-label{color:var(--muted2);font-weight:600;}
     .receipt-value{color:rgba(255,255,255,.95);font-weight:800;}
 
     .store-closed-overlay{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.85);backdrop-filter:blur(16px);}
-    .store-closed-card{width:min(460px,100%);border:1.5px solid rgba(255,255,255,.18);background:linear-gradient(135deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.05) 100%);
-      backdrop-filter:blur(24px);border-radius:20px;padding:22px 18px;text-align:center;box-shadow:var(--shadow-lg);}
-    .store-closed-title{font-family:Orbitron,monospace;font-size:22px;font-weight:900;background:linear-gradient(135deg, #ff4d4d 0%, var(--orange) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px;}
-
-    @media (max-width:480px){
-      .container{padding:16px 14px 80px;}
-      .logo-img{max-width:200px;}
-      :root{--pay-logo-size:48px;--pay-card-height:96px;}
-      .social-proof{left:10px;max-width:280px;font-size:11px;}
-      body:before{backdrop-filter:blur(12px);}
-    }
+    .store-closed-card{width:min(460px,100%);border:1.5px solid rgba(255,255,255,.18);background:linear-gradient(135deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.05) 100%);backdrop-filter:blur(24px);border-radius:20px;padding:22px 18px;text-align:center;}
 
     .toast{
       position:fixed;top:20px;right:20px;
@@ -534,20 +436,10 @@
       backdrop-filter:blur(16px);
       border:1.5px solid rgba(0,255,136,.4);
       border-radius:12px;padding:12px 16px;
-      box-shadow:0 12px 32px rgba(0,0,0,.5);
       display:none;align-items:center;gap:10px;
       z-index:1000;
-      animation:slideInRight .4s ease-out;
-    }
-    @keyframes slideInRight{
-      from{opacity:0;transform:translateX(100%);}
-      to{opacity:1;transform:translateX(0);}
     }
     .toast.show{display:flex;}
-    .toast i{color:var(--mint);font-size:18px;}
-    .toast-text{color:#fff;font-size:13px;font-weight:700;}
-
-    #submitBtn, #stickySubmitBtn { display: none; }
   </style>
 </head>
 
@@ -568,41 +460,31 @@
     <div class="social-proof-avatar" id="socialAvatar">A</div>
     <div class="social-proof-text">
       <div class="social-proof-name" id="socialName">Anonymous</div>
-      <div class="social-proof-action">
-        just ordered <span class="social-proof-uc" id="socialUC">660 UC</span>
-      </div>
+      <div class="social-proof-action">just ordered <span class="social-proof-uc" id="socialUC">660 UC</span></div>
     </div>
   </div>
 
   <div class="toast" id="toast">
-    <i class="fas fa-check-circle"></i>
-    <span class="toast-text" id="toastText">Copied!</span>
+    <i class="fas fa-check-circle" style="color:var(--mint)"></i>
+    <span class="toast-text" id="toastText" style="color:white;font-size:13px;font-weight:700;">Copied!</span>
   </div>
 
   <div class="container">
     <div class="top-card">
       <div class="header">
-        <img src="ucify.webp" alt="UCify Logo" class="logo-img" loading="lazy"> <p class="tagline">Premium BGMI UC • Lightning-fast delivery</p>
-
+        <img src="ucify.webp" alt="UCify Logo" class="logo-img"> 
+        <p class="tagline">Premium BGMI UC • Lightning-fast delivery</p>
         <div class="partner-block">
           <div class="partner-badge"><i class="fa-solid fa-badge-check"></i> <span>Official Partner</span></div>
-          </div>
-
+        </div>
         <div class="trust-strip">
           <div class="trust-pill"><i class="fa-solid fa-shield-halved"></i><span>Secure</span></div>
           <div class="trust-pill"><i class="fa-solid fa-bolt"></i><span>Fast</span></div>
           <div class="trust-pill"><i class="fa-solid fa-star"></i><span>Trusted</span></div>
         </div>
-
         <div class="live-stats">
-          <div class="stat-badge">
-            <i class="fa-solid fa-fire"></i>
-            <span><span class="stat-number" id="liveOrders">1425</span> orders today</span>
-          </div>
-          <div class="stat-badge">
-            <i class="fa-solid fa-clock"></i>
-            <span>Avg delivery: <span class="stat-number">3 min</span></span>
-          </div>
+          <div class="stat-badge"><i class="fa-solid fa-fire"></i><span><span class="stat-number" id="liveOrders">1425</span> orders today</span></div>
+          <div class="stat-badge"><i class="fa-solid fa-clock"></i><span>Avg delivery: <span class="stat-number">3 min</span></span></div>
         </div>
       </div>
     </div>
@@ -622,29 +504,26 @@
     <div id="step1" class="step active">
       <div class="step-content">
         <h2 class="step-title">Select UC Pack</h2>
-        <p class="subnote">Choose your desired pack to continue</p>
-
         <div class="packs-grid" id="packsGrid">
           <div class="pack-card" data-uc="60" data-price="40">
-            <div class="pack-uc"><img src="uc-logo.webp" alt="UC Icon" class="uc-icon" loading="lazy"><span>60 UC</span></div> <div class="pack-price">₹40</div>
+            <div class="pack-uc"><img src="uc-logo.webp" class="uc-icon"><span>60 UC</span></div> <div class="pack-price">₹40</div>
           </div>
           <div class="pack-card" data-uc="660" data-price="375">
-            <div class="pack-uc"><img src="uc-logo.webp" alt="UC Icon" class="uc-icon" loading="lazy"><span>660 UC</span></div> <div class="pack-price">₹375</div>
+            <div class="pack-uc"><img src="uc-logo.webp" class="uc-icon"><span>660 UC</span></div> <div class="pack-price">₹375</div>
           </div>
           <div class="pack-card" data-uc="1800" data-price="950">
-            <div class="pack-uc"><img src="uc-logo.webp" alt="UC Icon" class="uc-icon" loading="lazy"><span>1800 UC</span></div> <div class="pack-price">₹950</div>
+            <div class="pack-uc"><img src="uc-logo.webp" class="uc-icon"><span>1800 UC</span></div> <div class="pack-price">₹950</div>
           </div>
           <div class="pack-card" data-uc="3850" data-price="1710">
-            <div class="pack-uc"><img src="uc-logo.webp" alt="UC Icon" class="uc-icon" loading="lazy"><span>3850 UC</span></div> <div class="pack-price">₹1710</div>
+            <div class="pack-uc"><img src="uc-logo.webp" class="uc-icon"><span>3850 UC</span></div> <div class="pack-price">₹1710</div>
           </div>
           <div class="pack-card" data-uc="8100" data-price="3375">
-            <div class="pack-uc"><img src="uc-logo.webp" alt="UC Icon" class="uc-icon" loading="lazy"><span>8100 UC</span></div> <div class="pack-price">₹3375</div>
+            <div class="pack-uc"><img src="uc-logo.webp" class="uc-icon"><span>8100 UC</span></div> <div class="pack-price">₹3375</div>
           </div>
           <div class="pack-card" data-uc="16200" data-price="5260">
-            <div class="pack-uc"><img src="uc-logo.webp" alt="UC Icon" class="uc-icon" loading="lazy"><span>16200 UC</span></div> <div class="pack-price">₹5260</div>
+            <div class="pack-uc"><img src="uc-logo.webp" class="uc-icon"><span>16200 UC</span></div> <div class="pack-price">₹5260</div>
           </div>
         </div>
-
         <div class="btn-row">
           <button type="button" class="btn btn-primary" id="next1" disabled>Continue to Details</button>
         </div>
@@ -654,30 +533,23 @@
     <div id="step2" class="step">
       <div class="step-content">
         <h2 class="step-title">Enter Details</h2>
-        <p class="subnote">Provide accurate information for smooth delivery</p>
-
         <div class="form-group">
-          <label class="form-label">Selected Pack <span id="selectedPackDisplay" style="color:var(--gold);font-weight:900;">--</span></label>
+          <label class="form-label">Selected Pack <span id="selectedPackDisplay" style="color:var(--gold);">--</span></label>
         </div>
-
         <div class="form-group">
-          <label class="form-label">BGMI UID (9-12 digits)</label>
+          <label class="form-label">BGMI UID</label>
           <div class="form-input-wrapper">
-            <input type="tel" class="form-input" id="uid" placeholder="1234567890" maxlength="12" inputmode="numeric">
+            <input type="tel" class="form-input" id="uid" placeholder="1234567890" maxlength="12">
             <i class="input-icon" id="uidIcon"></i>
           </div>
-          <div class="error-message" id="uidError">Please enter a valid 9-12 digit UID</div>
         </div>
-
         <div class="form-group">
           <label class="form-label">In-Game Name (IGN)</label>
           <div class="form-input-wrapper">
             <input type="text" class="form-input" id="ign" placeholder="Your IGN" maxlength="20">
             <i class="input-icon" id="ignIcon"></i>
           </div>
-          <div class="error-message" id="ignError">Please enter your in-game name</div>
         </div>
-
         <div class="btn-row">
           <button type="button" class="btn btn-secondary" id="back2">Back</button>
           <button type="button" class="btn btn-primary" id="next2" disabled>Continue to Payment</button>
@@ -688,55 +560,34 @@
     <div id="step3" class="step">
       <div class="step-content">
         <h2 class="step-title">Payment</h2>
-        <p class="subnote">Scan QR, pay, then upload screenshot</p>
-
-        <div class="pay-box payment-section" style="text-align:center;margin-bottom:16px;">
-          <div style="color:rgba(255,255,255,.86);font-weight:900;font-size:16px;margin-bottom:12px;">
-            Amount to Pay: <span id="paymentAmount" style="color:var(--gold-bright);font-size:26px;text-shadow:0 4px 8px rgba(255,215,0,.4);animation:countUp .5s ease;">₹0</span>
+        <div style="text-align:center;margin-bottom:16px;">
+          <div style="color:white;font-weight:900;font-size:16px;">
+            Pay: <span id="paymentAmount" style="color:var(--gold-bright);font-size:26px;">₹0</span>
           </div>
 
           <div class="qr-section">
             <div class="qr-card">
               <div class="qr-title">🔒 Scan & Pay (UPI QR)</div>
-              <div id="qrLoader" class="qr-skeleton"></div>
-              <div id="upiQr" class="qr-box" style="display:none; background: #fff; padding: 10px;" aria-label="UPI QR"></div>
+              <div class="qr-box">
+                <img id="customPackQr" src="loading.webp" alt="Scan to Pay">
+              </div>
 
-              <div class="qr-timer" id="qrTimer" style="display:none;">
+              <div class="qr-timer">
                 <i class="fa-solid fa-clock"></i>
-                <span>QR valid for <span id="timerDisplay">15:00</span></span>
+                <span>Valid for <span id="timerDisplay">15:00</span></span>
               </div>
 
               <div class="upi-row">
-                <span class="upi-label">UPI ID:</span>
-                <span id="upiIdText" class="upi-id">--</span>
-                <button type="button" class="copy-btn" id="copyUpiBtn">
-                  <i class="fa-solid fa-copy"></i> Copy
-                </button>
+                <span class="upi-label">UPI:</span>
+                <span id="upiIdText" class="upi-id">ucify@ptaxis</span>
+                <button type="button" class="copy-btn" id="copyUpiBtn"><i class="fa-solid fa-copy"></i></button>
               </div>
-
-              <div class="security-badges">
-                <div class="security-badge"><i class="fa-solid fa-shield-check"></i><span>SSL Encrypted</span></div>
-                <div class="security-badge"><i class="fa-solid fa-lock"></i><span>Secure Payment</span></div>
-              </div>
-
-              <div class="hint" id="qrHint">Scan this QR to pay the exact amount shown above.</div>
             </div>
-          </div>
-
-          <div style="text-align:left;background:rgba(0,0,0,0.30);padding:12px;border-radius:14px;font-size:13px;color:#ddd;line-height:1.6;border:1px solid rgba(255,255,255,.12);box-shadow:inset 0 2px 4px rgba(0,0,0,.2);">
-            <strong style="color:var(--gold-bright);">📋 Instructions</strong><br>
-            1. Scan QR and pay the exact amount shown.<br>
-            2. Take a screenshot after payment.<br>
-            3. Upload screenshot below and place order.
           </div>
         </div>
 
-        <form id="orderForm" name="uc-order" method="POST" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field">
+        <form id="orderForm" method="POST" enctype="multipart/form-data" data-netlify="true">
           <input type="hidden" name="form-name" value="uc-order">
-          <p style="display:none;">
-            <label>Don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
-          </p>
-
           <input type="hidden" name="packuc" id="packuc">
           <input type="hidden" name="packprice" id="packprice">
           <input type="hidden" name="bgmiuid" id="bgmiuid">
@@ -745,20 +596,17 @@
           <input type="hidden" name="orderid" id="orderidfield">
 
           <div class="file-upload-area" id="uploadArea">
-            <i class="fas fa-cloud-upload-alt upload-success-icon" id="uploadSuccessIcon"></i>
-            <i class="fas fa-cloud-upload-alt" id="uploadIcon" style="font-size:48px;color:var(--gold);margin-bottom:12px;"></i>
-            <p style="font-weight:900;font-size:15px;" id="uploadText">📸 Upload Payment Screenshot</p>
-            <div class="hint" id="uploadHint">Drag & drop or click • JPG, PNG, WEBP under 5MB</div>
-            <input type="file" id="screenshot" name="paymentscreenshot" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" style="display:none;" required>
-            <img id="screenshotPreview" alt="Payment Preview">
+            <i class="fas fa-cloud-upload-alt" id="uploadIcon" style="font-size:48px;color:var(--gold);"></i>
+            <i class="fas fa-check-circle upload-success-icon" id="uploadSuccessIcon"></i>
+            <p id="uploadText">📸 Upload Payment Screenshot</p>
+            <input type="file" id="screenshot" name="paymentscreenshot" accept="image/*" style="display:none;" required>
+            <img id="screenshotPreview">
             <div class="upload-progress" id="uploadProgress"></div>
           </div>
 
           <div class="btn-row">
             <button type="button" class="btn btn-secondary" id="back3">Back</button>
-            <button type="submit" class="btn btn-primary" id="submitBtn">
-              <i class="fa-solid fa-rocket"></i> Place Order
-            </button>
+            <button type="submit" class="btn btn-primary" id="submitBtn" style="display:none;"><i class="fa-solid fa-rocket"></i> Place Order</button>
           </div>
         </form>
       </div>
@@ -768,341 +616,64 @@
       <div class="step-content success-screen">
         <div class="success-icon"><i class="fas fa-check-circle"></i></div>
         <h2 class="success-title">Order Received!</h2>
-        <p class="success-text" style="color:rgba(255,255,255,.85);font-weight:700;margin-bottom:8px;">
-          Thank you! Your order has been placed successfully.
-        </p>
-
-        <div class="delivery-badge"><i class="fas fa-rocket"></i><span>Delivery within 5 minutes</span></div>
-
-        <div style="margin-top:12px;">
-          <div style="font-weight:900;color:rgba(255,255,255,.95);font-size:15px;">
-            Order ID: <span id="orderIdText" style="color:var(--gold-bright);font-family:monospace;cursor:pointer;" onclick="copyOrderId()">--</span>
-            <button onclick="copyOrderId()" style="background:none;border:none;color:var(--gold);cursor:pointer;margin-left:6px;" title="Copy Order ID">
-              <i class="fa-solid fa-copy"></i>
-            </button>
-          </div>
-        </div>
-
         <div class="receipt-box">
-          <div class="receipt-title"><i class="fas fa-receipt"></i> Payment Receipt</div>
+          <div class="receipt-row"><span class="receipt-label">Order ID</span><span class="receipt-value" id="orderIdText">--</span></div>
           <div class="receipt-row"><span class="receipt-label">Pack</span><span class="receipt-value" id="receipt-pack">--</span></div>
-          <div class="receipt-row"><span class="receipt-label">Amount Paid</span><span class="receipt-value" id="receipt-amount">--</span></div>
-          <div class="receipt-row"><span class="receipt-label">BGMI UID</span><span class="receipt-value" id="receipt-uid">--</span></div>
-          <div class="receipt-row"><span class="receipt-label">IGN</span><span class="receipt-value" id="receipt-ign">--</span></div>
-          <div class="receipt-row"><span class="receipt-label">Order Time</span><span class="receipt-value" id="receipt-time">--</span></div>
           <div class="receipt-row"><span class="receipt-label">Status</span><span class="receipt-value" style="color:var(--mint);">✓ Processing</span></div>
         </div>
-
-        <div style="margin-top:16px;background:linear-gradient(135deg, rgba(0,217,255,.10) 0%, rgba(184,68,255,.08) 100%);border:1.5px solid rgba(0,217,255,.3);border-radius:14px;padding:12px;text-align:left;box-shadow:0 8px 24px rgba(0,217,255,.1);">
-          <div style="font-weight:900;color:var(--cyan);margin-bottom:8px;display:flex;align-items:center;gap:8px;">
-            <i class="fas fa-info-circle"></i><span>What happens next?</span>
-          </div>
-          <div style="font-size:12.5px;color:rgba(255,255,255,.85);line-height:1.6;font-weight:600;">
-            1. Our team will verify your payment<br>
-            2. UC will be added to your account<br>
-            3. You'll receive within 5 minutes
-          </div>
-        </div>
-
-        <div style="margin-top:16px;">
-          <button type="button" class="btn btn-primary" onclick="location.reload()">
-            <i class="fa-solid fa-plus"></i> Place New Order
-          </button>
-        </div>
+        <button type="button" class="btn btn-primary" style="margin-top:20px" onclick="location.reload()">New Order</button>
       </div>
     </div>
   </div>
 
   <div class="sticky-btn-wrap" id="stickyBtnWrap">
-    <button type="submit" form="orderForm" id="stickySubmitBtn" class="btn btn-primary" style="margin:0;">
-      <i class="fa-solid fa-rocket"></i> Place Order
-    </button>
+    <button type="submit" form="orderForm" id="stickySubmitBtn" class="btn btn-primary" style="display:none;">Place Order</button>
   </div>
 
   <script>
     let currentStep = 1;
     let selectedPack = null;
     let screenshotFile = null;
-    let orderId = null;
     let qrTimer = null;
     let timerSeconds = 900;
 
-    const UPIVPA = "ucify@ptaxis";
-    const UPI_NAME = "UCify";
-    const PURCHASESKEY = "ucify_purchased_packs";
-
+    // Particles
     function initParticles(){
       const container = document.getElementById('floatingParticles');
       for(let i = 0; i < 8; i++){
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.innerHTML = '💎';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 5 + 's';
-        particle.style.animationDuration = (8 + Math.random() * 4) + 's';
-        container.appendChild(particle);
+        const p = document.createElement('div');
+        p.className = 'particle'; p.innerHTML = '💎';
+        p.style.left = Math.random()*100+'%'; p.style.top = Math.random()*100+'%';
+        container.appendChild(p);
       }
     }
 
-    function createConfetti(){
-      const colors = ['#ffd700', '#ff6b35', '#00ff88', '#00d9ff', '#b844ff'];
-      for(let i = 0; i < 50; i++){
-        setTimeout(() => {
-          const confetti = document.createElement('div');
-          confetti.className = 'confetti';
-          confetti.style.left = Math.random() * 100 + '%';
-          confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-          confetti.style.animationDuration = (2 + Math.random()) + 's';
-          confetti.style.animationDelay = Math.random() * 0.5 + 's';
-          document.body.appendChild(confetti);
-          setTimeout(() => confetti.remove(), 3500);
-        }, i * 30);
-      }
-    }
-
-    function createRipple(e){
-      const button = e.currentTarget;
-      const ripple = document.createElement('span');
-      ripple.className = 'ripple';
-      const rect = button.getBoundingClientRect();
-      const size = Math.max(rect.width, rect.height);
-      ripple.style.width = ripple.style.height = size + 'px';
-      ripple.style.left = e.clientX - rect.left - size/2 + 'px';
-      ripple.style.top = e.clientY - rect.top - size/2 + 'px';
-      button.appendChild(ripple);
-      setTimeout(() => ripple.remove(), 600);
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      initParticles();
-      document.querySelectorAll('.btn').forEach(btn => {
-        btn.addEventListener('click', createRipple);
-      });
-    });
-
-    const gamingNames = [
-        "EagleEye", "ShadowReaper", "GhostKiller", "NinjaBlade", "ThunderGod", "IronFury", "CyberWolf", "DeathStrike", "SoulHunter", "BlazeGamer",
-        "ApexPredator", "WildCard", "TitanLord", "VenomSpit", "DarkKnight", "StormBringer", "FrostBite", "RogueOne", "BulletKing", "VikingPower",
-        "AlphaWolf", "OmegaRed", "PhoenixRise", "NightMare", "ZeroCool", "SkyWalker", "SilentAssassin", "HyperSpeed", "DragonHeart", "BlackPanther",
-        "SniperWolf", "CrazyDog", "MachineGun", "FireStorm", "StarLord", "CaptainKiller", "BadBoyGaming", "LegendWarrior", "KingOfUC", "ProSniper",
-        "DeadlyShots", "WarriorSoul", "ImmortalGamer", "GhostRider", "SpeedyGonzales", "TheGodFather", "MatrixReborn", "CyberPunK", "NeonDragon", "SilentKiller"
-    ];
-
-    const ucPacksList = ["60 UC", "660 UC", "1800 UC", "3850 UC", "8100 UC", "16200 UC"];
-
-    function showSocialProof(){
-      const randomName = gamingNames[Math.floor(Math.random() * gamingNames.length)];
-      const randomUC = ucPacksList[Math.floor(Math.random() * ucPacksList.length)];
-      const el = document.getElementById('socialProof');
-      if(!el) return;
-      document.getElementById('socialAvatar').textContent = randomName[0];
-      document.getElementById('socialName').textContent = randomName;
-      document.getElementById('socialUC').textContent = randomUC;
-      el.style.display = 'flex';
-      setTimeout(() => {
-        el.style.display = 'none';
-      }, 5000);
-    }
-
-    setInterval(() => {
-      if(Math.random() > 0.5) showSocialProof();
-    }, 10000);
-
-    function getIndiaHour(){
-      return new Date(new Intl.DateTimeFormat('en-IN', { timeZone:'Asia/Kolkata', hour:'2-digit', hour12:false }).format(new Date())).getHours();
-    }
-
-    function animateLiveOrders(){
-      const el = document.getElementById('liveOrders');
-      const currentHour = getIndiaHour();
-      
-      if (currentHour >= 1 && currentHour < 9) {
-          el.textContent = "0";
-          return;
-      }
-
-      let currentOrders = 1000 + Math.floor(Math.random() * 2001);
-      el.textContent = currentOrders;
-
-      function updateCounter() {
-          const h = getIndiaHour();
-          if (h >= 1 && h < 9) {
-              el.textContent = "0";
-          } else {
-              currentOrders += 1;
-              el.textContent = currentOrders;
-              el.style.animation = 'none';
-              setTimeout(() => el.style.animation = '', 10);
-          }
-          let nextInterval = 15000 + Math.floor(Math.random() * 5001);
-          setTimeout(updateCounter, nextInterval);
-      }
-      setTimeout(updateCounter, 15000);
-    }
-
-    animateLiveOrders();
-
-    function startQRTimer(){
-      const display = document.getElementById('timerDisplay');
-      const timerEl = document.getElementById('qrTimer');
-      timerEl.style.display = 'flex';
-      
-      if(qrTimer) clearInterval(qrTimer);
-      timerSeconds = 900;
-      qrTimer = setInterval(() => {
-        timerSeconds--;
-        const mins = Math.floor(timerSeconds / 60);
-        const secs = timerSeconds % 60;
-        display.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
-        
-        if(timerSeconds <= 0){
-          clearInterval(qrTimer);
-          display.textContent = 'Expired';
-        }
-      }, 1000);
-    }
-
-    function showToast(message){
-      const toast = document.getElementById('toast');
-      document.getElementById('toastText').textContent = message;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2000);
-    }
-
-    function copyOrderId(){
-      const orderIdEl = document.getElementById('orderIdText');
-      navigator.clipboard.writeText(orderIdEl.textContent).then(() => {
-        showToast('Order ID copied!');
-        triggerHaptic('success');
-      });
-    }
-
-    function triggerHaptic(type='light'){
-      if(!navigator.vibrate) return;
-      const patterns = { light:[10], medium:[20], heavy:[30], success:[10,20,10] };
-      navigator.vibrate(patterns[type] || [10]);
-    }
-
-    function buildUpiUri(vpa, name, amount, note){
-      const params = new URLSearchParams({ pa: vpa, pn: name, am: String(amount), cu: "INR", tn: note || "" });
-      return `upi://pay?${params.toString()}`;
-    }
-
-    // FIX: Optimized QR Rendering for all browsers
-    function renderUpiQr(upiUri){
-      const qrEl = document.getElementById("upiQr");
-      const loaderEl = document.getElementById("qrLoader");
-      if(!qrEl) return;
-      
-      // Reset state
-      loaderEl.style.display = 'block';
-      qrEl.style.display = 'none';
-      qrEl.innerHTML = "";
-
-      setTimeout(() => {
-        if(typeof QRCode === "undefined") return;
-        
-        // Render QR
-        new QRCode(qrEl, { 
-            text: upiUri, 
-            width: 204, 
-            height: 204, 
-            correctLevel: QRCode.CorrectLevel.M 
-        });
-
-        // Small delay ensures canvas is drawn before showing in other browsers
-        setTimeout(() => {
-            loaderEl.style.display = 'none';
-            qrEl.style.display = 'flex';
-            startQRTimer();
-        }, 100);
-      }, 500);
-    }
-
-    function loadPurchasedPacks(){
-      try{
-        const data = localStorage.getItem(PURCHASESKEY);
-        return data ? JSON.parse(data) : [];
-      }catch(e){ return []; }
-    }
-    function savePurchasedPacks(packs){ localStorage.setItem(PURCHASESKEY, JSON.stringify(packs)); }
-    function isPackPurchased(packUc){ return loadPurchasedPacks().includes(String(packUc)); }
-    function markPackPurchased(packUc){
-      const purchased = loadPurchasedPacks();
-      if(!purchased.includes(String(packUc))){
-        purchased.push(String(packUc));
-        savePurchasedPacks(purchased);
-      }
-    }
-
-    function applyStoreTiming(){
-      const hour = getIndiaHour();
-      const isClosed = (hour >= 1 && hour < 9);
-      const overlay = document.getElementById('storeClosedOverlay');
-      overlay.style.display = isClosed ? 'flex' : 'none';
-      document.querySelectorAll('button, input').forEach(el => {
-        if(!overlay.contains(el)) isClosed ? el.setAttribute('disabled', true) : el.removeAttribute('disabled');
-      });
-    }
-
-    function generateOrderId(){
-      return `UCF-${Date.now().toString().slice(-6)}-${Math.floor(100 + Math.random()*900)}`;
-    }
-
+    // Step Logic
     function showStep(step){
       document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
       document.getElementById(`step${step}`).classList.add('active');
       currentStep = step;
       updateProgress();
-      
-      const stickyBtnWrap = document.getElementById('stickyBtnWrap');
-      
-      if(step === 3){
-        window.addEventListener('scroll', handleStickyButton);
-      } else {
-        stickyBtnWrap.classList.remove('show');
-        window.removeEventListener('scroll', handleStickyButton);
-      }
-    }
-
-    function handleStickyButton(){
-      const stickyBtnWrap = document.getElementById('stickyBtnWrap');
-      if(window.scrollY > 300 && currentStep === 3 && screenshotFile){
-        stickyBtnWrap.classList.add('show');
-      } else {
-        stickyBtnWrap.classList.remove('show');
-      }
     }
 
     function updateProgress(){
       const steps = document.querySelectorAll('.progress-step');
-      const lines = [document.getElementById('line1'), document.getElementById('line2'), document.getElementById('line3')];
-      steps.forEach((stepEl, idx) => {
-        stepEl.classList.toggle('completed', idx < currentStep - 1);
-        stepEl.classList.toggle('active', idx === currentStep - 1);
+      steps.forEach((el, i) => {
+        el.classList.toggle('active', i === currentStep-1);
+        el.classList.toggle('completed', i < currentStep-1);
+        const line = document.getElementById(`line${i+1}`);
+        if(line) line.classList.toggle('active', i < currentStep-1);
       });
-      lines.forEach((lineEl, idx) => { if(lineEl) lineEl.classList.toggle('active', idx < currentStep - 1); });
     }
 
-    applyStoreTiming();
+    // Pack Selection
     document.querySelectorAll('.pack-card').forEach(card => {
-        if(isPackPurchased(card.dataset.uc)) card.classList.add('purchased');
-        card.addEventListener('click', function(){
-            if(this.classList.contains('purchased')) return;
-            triggerHaptic('light');
-            document.querySelectorAll('.pack-card').forEach(c => {
-              c.classList.remove('selected');
-              c.querySelector('.check-mark')?.remove();
-            });
-            this.classList.add('selected');
-            const checkMark = document.createElement('div');
-            checkMark.className = 'check-mark';
-            checkMark.innerHTML = '✓';
-            this.appendChild(checkMark);
-            selectedPack = { uc: this.dataset.uc, price: this.dataset.price };
-            document.getElementById('next1').disabled = false;
-        });
+      card.addEventListener('click', function(){
+        document.querySelectorAll('.pack-card').forEach(c => c.classList.remove('selected'));
+        this.classList.add('selected');
+        selectedPack = { uc: this.dataset.uc, price: this.dataset.price };
+        document.getElementById('next1').disabled = false;
+      });
     });
 
     document.getElementById('next1').onclick = () => {
@@ -1110,158 +681,94 @@
       showStep(2);
     };
 
-    const uidInput = document.getElementById('uid');
-    const ignInput = document.getElementById('ign');
-    const uidIcon = document.getElementById('uidIcon');
-    const ignIcon = document.getElementById('ignIcon');
-    const uidError = document.getElementById('uidError');
+    // Validation
+    const uidInp = document.getElementById('uid');
+    const ignInp = document.getElementById('ign');
+    const validateStep2 = () => {
+      const v = uidInp.value.length >= 9 && ignInp.value.trim().length >= 2;
+      document.getElementById('next2').disabled = !v;
+    };
+    uidInp.oninput = validateStep2;
+    ignInp.oninput = validateStep2;
 
-    uidInput.addEventListener('input', function(){
-      this.value = this.value.replace(/\D/g, '').slice(0,12);
-      const len = this.value.length;
-      const isValid = len >= 9 && len <= 12;
+    document.getElementById('next2').onclick = () => {
+      document.getElementById('paymentAmount').textContent = '₹' + selectedPack.price;
       
-      if(isValid){
-          uidInput.classList.add('valid');
-          uidInput.classList.remove('invalid');
-          uidIcon.className = 'input-icon check fas fa-check-circle';
-          uidError.classList.remove('show');
-          triggerHaptic('light');
-      } else {
-          uidInput.classList.remove('valid');
-          uidIcon.className = '';
-      }
-      document.getElementById('next2').disabled = !(isValid && ignInput.value.trim().length >= 2);
-    });
-
-    ignInput.addEventListener('input', function(){
-        const isValid = this.value.trim().length >= 2;
-        const uidLen = uidInput.value.length;
-        const isUidValid = uidLen >= 9 && uidLen <= 12;
-        
-        if(isValid){
-          ignInput.classList.add('valid');
-          ignIcon.className = 'input-icon check fas fa-check-circle';
-          triggerHaptic('light');
-        } else {
-          ignInput.classList.remove('valid');
-          ignIcon.className = '';
-        }
-        document.getElementById('next2').disabled = !(isValid && isUidValid);
-    });
-
-    document.getElementById('back2').onclick = () => showStep(1);
-    document.getElementById('back3').onclick = () => {
-      if(qrTimer) clearInterval(qrTimer);
-      showStep(2);
-    };
-
-    document.getElementById('copyUpiBtn').onclick = async function(){
-      triggerHaptic('light');
-      try {
-          await navigator.clipboard.writeText(UPIVPA);
-          showToast('UPI ID copied!');
-          const oldHTML = this.innerHTML;
-          this.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
-          setTimeout(() => this.innerHTML = oldHTML, 2000);
-      } catch (err) { alert("UPI ID: " + UPIVPA); }
-    };
-
-    document.getElementById('next2').onclick = function(){
-      const amountEl = document.getElementById('paymentAmount');
-      amountEl.textContent = '₹' + selectedPack.price;
-      amountEl.style.animation = 'countUp .5s ease';
-      orderId = generateOrderId();
-      document.getElementById('upiIdText').textContent = UPIVPA;
-      renderUpiQr(buildUpiUri(UPIVPA, UPI_NAME, selectedPack.price, `Order ${orderId}`));
+      // CHANGE: Dynamic QR Image based on price
+      // Make sure images like 40qr.webp, 375qr.webp exist in your repo
+      const qrImg = document.getElementById('customPackQr');
+      qrImg.src = `${selectedPack.price}qr.webp`;
+      
+      startTimer();
       showStep(3);
     };
 
-    const fileInput = document.getElementById('screenshot');
-    const preview = document.getElementById('screenshotPreview');
-    const uploadArea = document.getElementById('uploadArea');
-    const submitBtn = document.getElementById('submitBtn');
-    const stickySubmitBtn = document.getElementById('stickySubmitBtn');
-
-    uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('dragover'); });
-    uploadArea.addEventListener('dragleave', () => { uploadArea.classList.remove('dragover'); });
-    uploadArea.addEventListener('drop', (e) => {
-      e.preventDefault();
-      uploadArea.classList.remove('dragover');
-      const file = e.dataTransfer.files[0];
-      if(file && file.type.startsWith('image/')) handleFileUpload(file);
-    });
-
-    uploadArea.onclick = () => fileInput.click();
-    fileInput.onchange = (e) => { const file = e.target.files[0]; if(file) handleFileUpload(file); };
-
-    function handleFileUpload(file){
-      if(file.size <= 5*1024*1024){
-        screenshotFile = file;
-        const reader = new FileReader();
-        reader.onload = (evt) => {
-          preview.src = evt.target.result;
-          preview.style.display = 'block';
-          const progressBar = document.getElementById('uploadProgress');
-          let width = 0;
-          const interval = setInterval(() => {
-            if(width >= 100){
-              clearInterval(interval);
-              document.getElementById('uploadIcon').style.display = 'none';
-              document.getElementById('uploadSuccessIcon').style.display = 'block';
-              document.getElementById('uploadText').textContent = '✓ Screenshot Ready';
-              submitBtn.style.display = 'block';
-              stickySubmitBtn.style.display = 'block';
-              handleStickyButton();
-              triggerHaptic('success');
-            } else { width += 5; progressBar.style.width = width + '%'; }
-          }, 20);
-        };
-        reader.readAsDataURL(file);
-      } else {
-        alert("File too large. Please upload under 5MB.");
-      }
+    function startTimer(){
+      timerSeconds = 900;
+      if(qrTimer) clearInterval(qrTimer);
+      qrTimer = setInterval(() => {
+        timerSeconds--;
+        const m = Math.floor(timerSeconds/60), s = timerSeconds%60;
+        document.getElementById('timerDisplay').textContent = `${m}:${s<10?'0':''}${s}`;
+        if(timerSeconds<=0) clearInterval(qrTimer);
+      },1000);
     }
 
-    document.getElementById('orderForm').onsubmit = async (e) => {
-      e.preventDefault();
-      if(!screenshotFile) {
-          alert("Please upload a payment screenshot first.");
-          return;
-      }
-      submitBtn.disabled = true;
-      stickySubmitBtn.disabled = true;
-      submitBtn.classList.add('loading');
-      const time = new Date().toLocaleString('en-IN', { timeZone:'Asia/Kolkata' });
-      document.getElementById('packuc').value = selectedPack.uc;
-      document.getElementById('packprice').value = selectedPack.price;
-      document.getElementById('bgmiuid').value = uidInput.value;
-      document.getElementById('ignfield').value = ignInput.value;
-      document.getElementById('timefield').value = time;
-      document.getElementById('orderidfield').value = orderId;
-      try {
-        const res = await fetch('/', { method: 'POST', body: new FormData(e.target) });
-        if(res.ok) {
-          markPackPurchased(selectedPack.uc);
-          document.getElementById('orderIdText').textContent = orderId;
-          document.getElementById('receipt-pack').textContent = selectedPack.uc + " UC";
-          document.getElementById('receipt-amount').textContent = "₹" + selectedPack.price;
-          document.getElementById('receipt-uid').textContent = uidInput.value;
-          document.getElementById('receipt-ign').textContent = ignInput.value;
-          document.getElementById('receipt-time').textContent = time;
-          if(qrTimer) clearInterval(qrTimer);
-          showStep(4);
-          createConfetti();
-          triggerHaptic('success');
-        } else throw new Error();
-      } catch(err) {
-        alert("Submission failed. Try again.");
-        submitBtn.disabled = false;
-        stickySubmitBtn.disabled = false;
-        submitBtn.classList.remove('loading');
+    // File Upload
+    const fileInp = document.getElementById('screenshot');
+    document.getElementById('uploadArea').onclick = () => fileInp.click();
+    fileInp.onchange = (e) => {
+      const file = e.target.files[0];
+      if(file){
+        screenshotFile = file;
+        const reader = new FileReader();
+        reader.onload = (ex) => {
+          document.getElementById('screenshotPreview').src = ex.target.result;
+          document.getElementById('screenshotPreview').style.display = 'block';
+          document.getElementById('uploadIcon').style.display = 'none';
+          document.getElementById('uploadSuccessIcon').style.display = 'block';
+          document.getElementById('submitBtn').style.display = 'block';
+          document.getElementById('stickySubmitBtn').style.display = 'block';
+          document.getElementById('stickyBtnWrap').classList.add('show');
+        };
+        reader.readAsDataURL(file);
       }
     };
-    setTimeout(showSocialProof, 3000);
+
+    // Form Submit
+    document.getElementById('orderForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.classList.add('loading');
+      const oid = 'UCF' + Date.now().toString().slice(-6);
+      
+      document.getElementById('packuc').value = selectedPack.uc;
+      document.getElementById('packprice').value = selectedPack.price;
+      document.getElementById('bgmiuid').value = uidInp.value;
+      document.getElementById('ignfield').value = ignInp.value;
+      document.getElementById('orderidfield').value = oid;
+      document.getElementById('timefield').value = new Date().toLocaleString();
+
+      try {
+        const res = await fetch('/', { method: 'POST', body: new FormData(e.target) });
+        if(res.ok){
+          document.getElementById('orderIdText').textContent = oid;
+          document.getElementById('receipt-pack').textContent = selectedPack.uc + " UC";
+          showStep(4);
+        }
+      } catch(err) { alert("Error!"); }
+    };
+
+    document.getElementById('copyUpiBtn').onclick = () => {
+      navigator.clipboard.writeText("ucify@ptaxis");
+      document.getElementById('toast').classList.add('show');
+      setTimeout(()=>document.getElementById('toast').classList.remove('show'), 2000);
+    };
+
+    document.getElementById('back2').onclick = () => showStep(1);
+    document.getElementById('back3').onclick = () => showStep(2);
+
+    initParticles();
   </script>
 </body>
 </html>
