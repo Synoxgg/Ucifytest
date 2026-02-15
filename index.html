@@ -7,29 +7,12 @@
   <title>UCify - Premium BGMI UC Store | Fast & Secure UC Delivery</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <meta name="title" content="UCify - Premium BGMI UC Store | Fast & Secure UC Delivery">
-  <meta name="description" content="UCify is India's most trusted BGMI UC store. Buy cheap UC with lightning-fast delivery. 100% secure and official partner for BGMI players.">
-  <meta name="keywords" content="UCify, UCify shop, buy BGMI UC, cheap UC, BGMI UC store India, UCify online">
-  <meta name="author" content="UCify">
-  <meta name="robots" content="index, follow">
-
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://ucify.shop/">
-  <meta property="og:title" content="UCify - Premium BGMI UC Store">
-  <meta property="og:description" content="Get BGMI UC at the best prices. Fast delivery and secure payments.">
-  <meta property="og:image" content="ucify.webp">
-
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://ucify.shop/">
-  <meta property="twitter:title" content="UCify - Premium BGMI UC Store">
-  <meta property="twitter:description" content="Get BGMI UC at the best prices. Fast delivery and secure payments.">
-  <meta property="twitter:image" content="ucify.webp">
-
-  <meta name="google-site-verification" content="pvN0e91pXGCKUnAIwdxrCSZdwnkIFEp0j1bMI01s6-E" />
-
+  
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
+    /* --- CSS REMAINS EXACTLY THE SAME AS YOUR ORIGINAL --- */
     :root{
       --bg1:#05050a;--bg2:#0f001a;--bg3:#1a0028;
       --stroke:rgba(255,255,255,.14);--stroke2:rgba(255,255,255,.22);
@@ -331,7 +314,6 @@
       overflow:hidden;
       box-shadow:0 8px 24px rgba(0,0,0,.3), inset 0 2px 8px rgba(0,0,0,.1);
     }
-    /* Modified for Image */
     .qr-box img{width:100%;height:100%;object-fit:cover;}
     
     .qr-timer{
@@ -546,6 +528,8 @@
 </head>
 
 <body>
+  <audio id="bgmAudio" src="bgm.mp3" loop></audio>
+
   <div class="floating-particles" id="floatingParticles"></div>
 
   <div class="store-closed-overlay" id="storeClosedOverlay">
@@ -615,8 +599,37 @@
 
     <div id="step1" class="step active">
       <div class="step-content">
+        <h2 class="step-title">Enter Details</h2>
+        <p class="subnote">Provide accurate information to view packs</p>
+
+        <div class="form-group">
+          <label class="form-label">BGMI UID (9-12 digits)</label>
+          <div class="form-input-wrapper">
+            <input type="tel" class="form-input" id="uid" placeholder="1234567890" maxlength="12" inputmode="numeric">
+            <i class="input-icon" id="uidIcon"></i>
+          </div>
+          <div class="error-message" id="uidError">Please enter a valid 9-12 digit UID</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">In-Game Name (IGN)</label>
+          <div class="form-input-wrapper">
+            <input type="text" class="form-input" id="ign" placeholder="Your IGN" maxlength="20">
+            <i class="input-icon" id="ignIcon"></i>
+          </div>
+          <div class="error-message" id="ignError">Please enter your in-game name</div>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" class="btn btn-primary" id="next1" disabled>Continue to Packs</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="step2" class="step">
+      <div class="step-content">
         <h2 class="step-title">Select UC Pack</h2>
-        <p class="subnote">Choose your desired pack to continue</p>
+        <p class="subnote">Choose your desired pack for <span id="displayUid" style="color:var(--orange);">--</span></p>
 
         <div class="packs-grid" id="packsGrid">
           <div class="pack-card" data-uc="60" data-price="40">
@@ -640,41 +653,8 @@
         </div>
 
         <div class="btn-row">
-          <button type="button" class="btn btn-primary" id="next1" disabled>Continue to Details</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="step2" class="step">
-      <div class="step-content">
-        <h2 class="step-title">Enter Details</h2>
-        <p class="subnote">Provide accurate information for smooth delivery</p>
-
-        <div class="form-group">
-          <label class="form-label">Selected Pack <span id="selectedPackDisplay" style="color:var(--gold);font-weight:900;">--</span></label>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">BGMI UID (9-12 digits)</label>
-          <div class="form-input-wrapper">
-            <input type="tel" class="form-input" id="uid" placeholder="1234567890" maxlength="12" inputmode="numeric">
-            <i class="input-icon" id="uidIcon"></i>
-          </div>
-          <div class="error-message" id="uidError">Please enter a valid 9-12 digit UID</div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">In-Game Name (IGN)</label>
-          <div class="form-input-wrapper">
-            <input type="text" class="form-input" id="ign" placeholder="Your IGN" maxlength="20">
-            <i class="input-icon" id="ignIcon"></i>
-          </div>
-          <div class="error-message" id="ignError">Please enter your in-game name</div>
-        </div>
-
-        <div class="btn-row">
-          <button type="button" class="btn btn-secondary" id="back2">Back</button>
-          <button type="button" class="btn btn-primary" id="next2" disabled>Continue to Payment</button>
+            <button type="button" class="btn btn-secondary" id="backToDetails">Back</button>
+            <button type="button" class="btn btn-primary" id="next2" disabled>Continue to Payment</button>
         </div>
       </div>
     </div>
@@ -817,16 +797,34 @@
   </div>
 
   <script>
+    // --- GOOGLE SHEETS BACKEND CONFIGURATION ---
+    // PASTE YOUR WEB APP URL HERE AFTER DEPLOYING APPS SCRIPT
+    const APPS_SCRIPT_URL = ""; 
+    // Example: "https://script.google.com/macros/s/XXXXX/exec"
+
     let currentStep = 1;
     let selectedPack = null;
     let screenshotFile = null;
     let orderId = null;
     let qrTimer = null;
     let timerSeconds = 900;
+    let currentUid = "";
+    let currentIgn = "";
 
     const UPIVPA = "ucify@ptaxis";
     const UPI_NAME = "UCify";
-    const PURCHASESKEY = "ucify_purchased_packs";
+
+    // --- BGM AUDIO SETUP ---
+    const bgm = document.getElementById('bgmAudio');
+    function initAudio() {
+        if(bgm.paused) {
+            bgm.play().catch(e => console.log("Audio waiting for interaction"));
+        }
+    }
+    // Play audio on first user interaction anywhere
+    document.body.addEventListener('click', initAudio, { once: true });
+    document.body.addEventListener('touchstart', initAudio, { once: true });
+
 
     function initParticles(){
       const container = document.getElementById('floatingParticles');
@@ -980,25 +978,6 @@
       navigator.vibrate(patterns[type] || [10]);
     }
 
-    // REMOVED: buildUpiUri and renderUpiQr functions are no longer needed
-    // We are now setting Image Src directly
-
-    function loadPurchasedPacks(){
-      try{
-        const data = localStorage.getItem(PURCHASESKEY);
-        return data ? JSON.parse(data) : [];
-      }catch(e){ return []; }
-    }
-    function savePurchasedPacks(packs){ localStorage.setItem(PURCHASESKEY, JSON.stringify(packs)); }
-    function isPackPurchased(packUc){ return loadPurchasedPacks().includes(String(packUc)); }
-    function markPackPurchased(packUc){
-      const purchased = loadPurchasedPacks();
-      if(!purchased.includes(String(packUc))){
-        purchased.push(String(packUc));
-        savePurchasedPacks(purchased);
-      }
-    }
-
     function applyStoreTiming(){
       const hour = getIndiaHour();
       const isClosed = (hour >= 1 && hour < 9);
@@ -1049,8 +1028,15 @@
     }
 
     applyStoreTiming();
+
+    const uidInput = document.getElementById('uid');
+    const ignInput = document.getElementById('ign');
+    const uidIcon = document.getElementById('uidIcon');
+    const ignIcon = document.getElementById('ignIcon');
+    const uidError = document.getElementById('uidError');
+
+    // --- PACK CLICK LOGIC (STEP 2) ---
     document.querySelectorAll('.pack-card').forEach(card => {
-        if(isPackPurchased(card.dataset.uc)) card.classList.add('purchased');
         card.addEventListener('click', function(){
             if(this.classList.contains('purchased')) return;
             triggerHaptic('light');
@@ -1064,21 +1050,11 @@
             checkMark.innerHTML = '✓';
             this.appendChild(checkMark);
             selectedPack = { uc: this.dataset.uc, price: this.dataset.price };
-            document.getElementById('next1').disabled = false;
+            document.getElementById('next2').disabled = false;
         });
     });
 
-    document.getElementById('next1').onclick = () => {
-      document.getElementById('selectedPackDisplay').textContent = `${selectedPack.uc} UC (₹${selectedPack.price})`;
-      showStep(2);
-    };
-
-    const uidInput = document.getElementById('uid');
-    const ignInput = document.getElementById('ign');
-    const uidIcon = document.getElementById('uidIcon');
-    const ignIcon = document.getElementById('ignIcon');
-    const uidError = document.getElementById('uidError');
-
+    // --- STEP 1 LOGIC (Enter Details) ---
     uidInput.addEventListener('input', function(){
       this.value = this.value.replace(/\D/g, '').slice(0,12);
       const len = this.value.length;
@@ -1094,7 +1070,7 @@
           uidInput.classList.remove('valid');
           uidIcon.className = '';
       }
-      document.getElementById('next2').disabled = !(isValid && ignInput.value.trim().length >= 2);
+      document.getElementById('next1').disabled = !(isValid && ignInput.value.trim().length >= 2);
     });
 
     ignInput.addEventListener('input', function(){
@@ -1110,10 +1086,85 @@
           ignInput.classList.remove('valid');
           ignIcon.className = '';
         }
-        document.getElementById('next2').disabled = !(isValid && isUidValid);
+        document.getElementById('next1').disabled = !(isValid && isUidValid);
     });
 
-    document.getElementById('back2').onclick = () => showStep(1);
+    // --- GOOGLE SHEETS FETCH FUNCTION ---
+    async function fetchPurchasedPacks(uid) {
+        if(!APPS_SCRIPT_URL) return []; // Fallback if no script is set
+        try {
+            // Add 'no-cors' only if debugging issues, but standard GET usually needs cors handling in script
+            const response = await fetch(`${APPS_SCRIPT_URL}?uid=${uid}`);
+            const data = await response.json();
+            return data.purchased || [];
+        } catch (e) {
+            console.error("Error fetching history:", e);
+            return [];
+        }
+    }
+
+    // --- BUTTON: CONTINUE TO PACKS (Step 1 -> Step 2) ---
+    document.getElementById('next1').onclick = async () => {
+        const btn = document.getElementById('next1');
+        btn.textContent = "Checking...";
+        btn.disabled = true;
+
+        currentUid = uidInput.value;
+        currentIgn = ignInput.value;
+        document.getElementById('displayUid').textContent = currentUid;
+
+        // Fetch history
+        const purchasedPacks = await fetchPurchasedPacks(currentUid);
+        
+        // Reset Packs
+        document.querySelectorAll('.pack-card').forEach(card => {
+            card.classList.remove('purchased', 'selected');
+            card.querySelector('.check-mark')?.remove();
+            
+            // Check if bought
+            if(purchasedPacks.includes(card.dataset.uc)){
+                card.classList.add('purchased');
+            }
+        });
+
+        btn.textContent = "Continue to Packs";
+        btn.disabled = false;
+        showStep(2);
+    };
+
+    document.getElementById('backToDetails').onclick = () => showStep(1);
+
+    // --- BUTTON: CONTINUE TO PAYMENT (Step 2 -> Step 3) ---
+    document.getElementById('next2').onclick = function(){
+      const amountEl = document.getElementById('paymentAmount');
+      amountEl.textContent = '₹' + selectedPack.price;
+      amountEl.style.animation = 'countUp .5s ease';
+      orderId = generateOrderId();
+      document.getElementById('upiIdText').textContent = UPIVPA;
+      
+      const qrImage = document.getElementById('staticQrImage');
+      const loader = document.getElementById('qrLoader');
+      
+      qrImage.style.display = 'none';
+      loader.style.display = 'block';
+
+      const qrFilename = `${selectedPack.price}qr.webp`;
+      qrImage.src = qrFilename;
+
+      qrImage.onload = function(){
+          loader.style.display = 'none';
+          qrImage.style.display = 'block';
+          startQRTimer();
+      };
+
+      qrImage.onerror = function(){
+          loader.style.display = 'none';
+          alert(`Image missing: ${qrFilename}. Please upload it to your repo.`);
+      };
+
+      showStep(3);
+    };
+
     document.getElementById('back3').onclick = () => {
       if(qrTimer) clearInterval(qrTimer);
       showStep(2);
@@ -1128,42 +1179,6 @@
           this.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
           setTimeout(() => this.innerHTML = oldHTML, 2000);
       } catch (err) { alert("UPI ID: " + UPIVPA); }
-    };
-
-    // CHANGED: Next Button Logic for Static Images
-    document.getElementById('next2').onclick = function(){
-      const amountEl = document.getElementById('paymentAmount');
-      amountEl.textContent = '₹' + selectedPack.price;
-      amountEl.style.animation = 'countUp .5s ease';
-      orderId = generateOrderId();
-      document.getElementById('upiIdText').textContent = UPIVPA;
-      
-      // STATIC QR IMAGE LOGIC
-      const qrImage = document.getElementById('staticQrImage');
-      const loader = document.getElementById('qrLoader');
-      
-      // Reset State
-      qrImage.style.display = 'none';
-      loader.style.display = 'block';
-
-      // Set Image Source: e.g. 40qr.webp, 375qr.webp
-      const qrFilename = `${selectedPack.price}qr.webp`;
-      qrImage.src = qrFilename;
-
-      // Handle Load
-      qrImage.onload = function(){
-          loader.style.display = 'none';
-          qrImage.style.display = 'block';
-          startQRTimer();
-      };
-
-      // Handle Error (Fall back or alert if file missing)
-      qrImage.onerror = function(){
-          loader.style.display = 'none';
-          alert(`Image missing: ${qrFilename}. Please upload it to your repo.`);
-      };
-
-      showStep(3);
     };
 
     const fileInput = document.getElementById('screenshot');
@@ -1212,6 +1227,7 @@
       }
     }
 
+    // --- FORM SUBMISSION ---
     document.getElementById('orderForm').onsubmit = async (e) => {
       e.preventDefault();
       if(!screenshotFile) {
@@ -1222,21 +1238,45 @@
       stickySubmitBtn.disabled = true;
       submitBtn.classList.add('loading');
       const time = new Date().toLocaleString('en-IN', { timeZone:'Asia/Kolkata' });
+      
+      // Fill hidden fields
       document.getElementById('packuc').value = selectedPack.uc;
       document.getElementById('packprice').value = selectedPack.price;
-      document.getElementById('bgmiuid').value = uidInput.value;
-      document.getElementById('ignfield').value = ignInput.value;
+      document.getElementById('bgmiuid').value = currentUid;
+      document.getElementById('ignfield').value = currentIgn;
       document.getElementById('timefield').value = time;
       document.getElementById('orderidfield').value = orderId;
+
       try {
+        // 1. Submit to Netlify (Backend handling form)
         const res = await fetch('/', { method: 'POST', body: new FormData(e.target) });
+        
         if(res.ok) {
-          markPackPurchased(selectedPack.uc);
+          // 2. Submit to Google Sheets (Database for duplicate check)
+          if(APPS_SCRIPT_URL) {
+             try {
+                // Send raw JSON to Apps Script
+                const sheetData = {
+                    uid: currentUid,
+                    uc: selectedPack.uc
+                };
+                // Using no-cors mode because Google Script returns 302 redirect usually
+                await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', 
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(sheetData)
+                });
+             } catch(sheetErr) {
+                 console.log("Sheet save error (non-fatal):", sheetErr);
+             }
+          }
+
           document.getElementById('orderIdText').textContent = orderId;
           document.getElementById('receipt-pack').textContent = selectedPack.uc + " UC";
           document.getElementById('receipt-amount').textContent = "₹" + selectedPack.price;
-          document.getElementById('receipt-uid').textContent = uidInput.value;
-          document.getElementById('receipt-ign').textContent = ignInput.value;
+          document.getElementById('receipt-uid').textContent = currentUid;
+          document.getElementById('receipt-ign').textContent = currentIgn;
           document.getElementById('receipt-time').textContent = time;
           if(qrTimer) clearInterval(qrTimer);
           showStep(4);
