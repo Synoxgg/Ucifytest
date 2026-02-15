@@ -43,7 +43,7 @@
       --shadow-lg:0 28px 76px rgba(0,0,0,.62);
       --shadow-glow:0 0 44px rgba(255,215,0,.16);
       --radius:22px;--radius-sm:16px;--radius-xs:14px;
-      --step-bg:url('bg1.webp'); 
+      --step-bg:url('bg1.webp');
       --pay-logo-size:52px;
       --pay-card-height:100px;
     }
@@ -333,7 +333,12 @@
       overflow:hidden;
       box-shadow:0 8px 24px rgba(0,0,0,.3), inset 0 2px 8px rgba(0,0,0,.1);
     }
-    .qr-box canvas,.qr-box img{width:204px!important;height:204px!important}
+    /* Fixed canvas scaling for other browsers */
+    .qr-box canvas, .qr-box img {
+        width: 100% !important;
+        height: 100% !important;
+        display: block !important;
+    }
     
     .qr-timer{
       text-align:center;margin:8px 0;
@@ -694,7 +699,7 @@
             <div class="qr-card">
               <div class="qr-title">🔒 Scan & Pay (UPI QR)</div>
               <div id="qrLoader" class="qr-skeleton"></div>
-              <div id="upiQr" class="qr-box" style="display:none;" aria-label="UPI QR"></div>
+              <div id="upiQr" class="qr-box" style="display:none; background: #fff; padding: 10px;" aria-label="UPI QR"></div>
 
               <div class="qr-timer" id="qrTimer" style="display:none;">
                 <i class="fa-solid fa-clock"></i>
@@ -744,7 +749,7 @@
             <i class="fas fa-cloud-upload-alt" id="uploadIcon" style="font-size:48px;color:var(--gold);margin-bottom:12px;"></i>
             <p style="font-weight:900;font-size:15px;" id="uploadText">📸 Upload Payment Screenshot</p>
             <div class="hint" id="uploadHint">Drag & drop or click • JPG, PNG, WEBP under 5MB</div>
-            <input type="file" id="screenshot" name="paymentscreenshot" accept=".jpg,.jpeg,.png,.webp" style="display:none;" required>
+            <input type="file" id="screenshot" name="paymentscreenshot" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" style="display:none;" required>
             <img id="screenshotPreview" alt="Payment Preview">
             <div class="upload-progress" id="uploadProgress"></div>
           </div>
@@ -876,24 +881,33 @@
       });
     });
 
-    const gamingNames = ["EagleEye", "ShadowReaper", "GhostKiller", "NinjaBlade", "ThunderGod", "IronFury", "CyberWolf", "DeathStrike", "SoulHunter", "BlazeGamer", "ApexPredator", "WildCard", "TitanLord", "VenomSpit", "DarkKnight", "StormBringer", "FrostBite", "RogueOne", "BulletKing", "VikingPower", "AlphaWolf", "OmegaRed", "PhoenixRise", "NightMare", "ZeroCool", "SkyWalker", "SilentAssassin", "HyperSpeed", "DragonHeart", "BlackPanther", "SniperWolf", "CrazyDog", "MachineGun", "FireStorm", "StarLord", "CaptainKiller", "BadBoyGaming", "LegendWarrior", "KingOfUC", "ProSniper", "DeadlyShots", "WarriorSoul", "ImmortalGamer", "GhostRider", "SpeedyGonzales", "TheGodFather", "MatrixReborn", "CyberPunK", "NeonDragon", "SilentKiller"];
+    const gamingNames = [
+        "EagleEye", "ShadowReaper", "GhostKiller", "NinjaBlade", "ThunderGod", "IronFury", "CyberWolf", "DeathStrike", "SoulHunter", "BlazeGamer",
+        "ApexPredator", "WildCard", "TitanLord", "VenomSpit", "DarkKnight", "StormBringer", "FrostBite", "RogueOne", "BulletKing", "VikingPower",
+        "AlphaWolf", "OmegaRed", "PhoenixRise", "NightMare", "ZeroCool", "SkyWalker", "SilentAssassin", "HyperSpeed", "DragonHeart", "BlackPanther",
+        "SniperWolf", "CrazyDog", "MachineGun", "FireStorm", "StarLord", "CaptainKiller", "BadBoyGaming", "LegendWarrior", "KingOfUC", "ProSniper",
+        "DeadlyShots", "WarriorSoul", "ImmortalGamer", "GhostRider", "SpeedyGonzales", "TheGodFather", "MatrixReborn", "CyberPunK", "NeonDragon", "SilentKiller"
+    ];
+
     const ucPacksList = ["60 UC", "660 UC", "1800 UC", "3850 UC", "8100 UC", "16200 UC"];
 
     function showSocialProof(){
       const randomName = gamingNames[Math.floor(Math.random() * gamingNames.length)];
       const randomUC = ucPacksList[Math.floor(Math.random() * ucPacksList.length)];
       const el = document.getElementById('socialProof');
-      const avatar = document.getElementById('socialAvatar');
-      if(avatar) avatar.textContent = randomName[0];
-      const name = document.getElementById('socialName');
-      if(name) name.textContent = randomName;
-      const uc = document.getElementById('socialUC');
-      if(uc) uc.textContent = randomUC;
+      if(!el) return;
+      document.getElementById('socialAvatar').textContent = randomName[0];
+      document.getElementById('socialName').textContent = randomName;
+      document.getElementById('socialUC').textContent = randomUC;
       el.style.display = 'flex';
-      setTimeout(() => { el.style.display = 'none'; }, 5000);
+      setTimeout(() => {
+        el.style.display = 'none';
+      }, 5000);
     }
 
-    setInterval(() => { if(Math.random() > 0.5) showSocialProof(); }, 10000);
+    setInterval(() => {
+      if(Math.random() > 0.5) showSocialProof();
+    }, 10000);
 
     function getIndiaHour(){
       return new Date(new Intl.DateTimeFormat('en-IN', { timeZone:'Asia/Kolkata', hour:'2-digit', hour12:false }).format(new Date())).getHours();
@@ -902,23 +916,38 @@
     function animateLiveOrders(){
       const el = document.getElementById('liveOrders');
       const currentHour = getIndiaHour();
-      if (currentHour >= 1 && currentHour < 9) { el.textContent = "0"; return; }
+      
+      if (currentHour >= 1 && currentHour < 9) {
+          el.textContent = "0";
+          return;
+      }
+
       let currentOrders = 1000 + Math.floor(Math.random() * 2001);
       el.textContent = currentOrders;
+
       function updateCounter() {
           const h = getIndiaHour();
-          if (h >= 1 && h < 9) { el.textContent = "0"; } 
-          else { currentOrders += 1; el.textContent = currentOrders; el.style.animation = 'none'; setTimeout(() => el.style.animation = '', 10); }
-          setTimeout(updateCounter, 15000 + Math.floor(Math.random() * 5001));
+          if (h >= 1 && h < 9) {
+              el.textContent = "0";
+          } else {
+              currentOrders += 1;
+              el.textContent = currentOrders;
+              el.style.animation = 'none';
+              setTimeout(() => el.style.animation = '', 10);
+          }
+          let nextInterval = 15000 + Math.floor(Math.random() * 5001);
+          setTimeout(updateCounter, nextInterval);
       }
       setTimeout(updateCounter, 15000);
     }
+
     animateLiveOrders();
 
     function startQRTimer(){
       const display = document.getElementById('timerDisplay');
       const timerEl = document.getElementById('qrTimer');
       timerEl.style.display = 'flex';
+      
       if(qrTimer) clearInterval(qrTimer);
       timerSeconds = 900;
       qrTimer = setInterval(() => {
@@ -926,7 +955,11 @@
         const mins = Math.floor(timerSeconds / 60);
         const secs = timerSeconds % 60;
         display.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
-        if(timerSeconds <= 0){ clearInterval(qrTimer); display.textContent = 'Expired'; }
+        
+        if(timerSeconds <= 0){
+          clearInterval(qrTimer);
+          display.textContent = 'Expired';
+        }
       }, 1000);
     }
 
@@ -939,7 +972,10 @@
 
     function copyOrderId(){
       const orderIdEl = document.getElementById('orderIdText');
-      navigator.clipboard.writeText(orderIdEl.textContent).then(() => { showToast('Order ID copied!'); triggerHaptic('success'); });
+      navigator.clipboard.writeText(orderIdEl.textContent).then(() => {
+        showToast('Order ID copied!');
+        triggerHaptic('success');
+      });
     }
 
     function triggerHaptic(type='light'){
@@ -949,73 +985,94 @@
     }
 
     function buildUpiUri(vpa, name, amount, note){
-      return `upi://pay?pa=${vpa}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
+      const params = new URLSearchParams({ pa: vpa, pn: name, am: String(amount), cu: "INR", tn: note || "" });
+      return `upi://pay?${params.toString()}`;
     }
 
+    // FIX: Optimized QR Rendering for all browsers
     function renderUpiQr(upiUri){
       const qrEl = document.getElementById("upiQr");
       const loaderEl = document.getElementById("qrLoader");
+      if(!qrEl) return;
       
-      // Fix: Reset display before rendering for cross-browser stability
+      // Reset state
       loaderEl.style.display = 'block';
       qrEl.style.display = 'none';
       qrEl.innerHTML = "";
 
       setTimeout(() => {
-        if(typeof QRCode === "undefined") {
-            console.error("QRCode library not loaded");
-            return;
-        }
+        if(typeof QRCode === "undefined") return;
         
-        // Fix: Render while visible
-        qrEl.style.display = 'flex';
+        // Render QR
         new QRCode(qrEl, { 
             text: upiUri, 
             width: 204, 
             height: 204, 
             correctLevel: QRCode.CorrectLevel.M 
         });
-        
-        loaderEl.style.display = 'none';
-        startQRTimer();
+
+        // Small delay ensures canvas is drawn before showing in other browsers
+        setTimeout(() => {
+            loaderEl.style.display = 'none';
+            qrEl.style.display = 'flex';
+            startQRTimer();
+        }, 100);
       }, 500);
     }
 
     function loadPurchasedPacks(){
-      try{ const data = localStorage.getItem(PURCHASESKEY); return data ? JSON.parse(data) : []; }
-      catch(e){ return []; }
+      try{
+        const data = localStorage.getItem(PURCHASESKEY);
+        return data ? JSON.parse(data) : [];
+      }catch(e){ return []; }
     }
     function savePurchasedPacks(packs){ localStorage.setItem(PURCHASESKEY, JSON.stringify(packs)); }
     function isPackPurchased(packUc){ return loadPurchasedPacks().includes(String(packUc)); }
     function markPackPurchased(packUc){
       const purchased = loadPurchasedPacks();
-      if(!purchased.includes(String(packUc))){ purchased.push(String(packUc)); savePurchasedPacks(purchased); }
+      if(!purchased.includes(String(packUc))){
+        purchased.push(String(packUc));
+        savePurchasedPacks(purchased);
+      }
     }
 
     function applyStoreTiming(){
       const hour = getIndiaHour();
       const isClosed = (hour >= 1 && hour < 9);
       const overlay = document.getElementById('storeClosedOverlay');
-      if(overlay) overlay.style.display = isClosed ? 'flex' : 'none';
+      overlay.style.display = isClosed ? 'flex' : 'none';
+      document.querySelectorAll('button, input').forEach(el => {
+        if(!overlay.contains(el)) isClosed ? el.setAttribute('disabled', true) : el.removeAttribute('disabled');
+      });
     }
 
-    function generateOrderId(){ return `UCF-${Date.now().toString().slice(-6)}-${Math.floor(100 + Math.random()*900)}`; }
+    function generateOrderId(){
+      return `UCF-${Date.now().toString().slice(-6)}-${Math.floor(100 + Math.random()*900)}`;
+    }
 
     function showStep(step){
       document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
       document.getElementById(`step${step}`).classList.add('active');
       currentStep = step;
       updateProgress();
+      
       const stickyBtnWrap = document.getElementById('stickyBtnWrap');
-      if(step === 3){ window.addEventListener('scroll', handleStickyButton); } 
-      else { stickyBtnWrap.classList.remove('show'); window.removeEventListener('scroll', handleStickyButton); }
-      window.scrollTo({top: 0, behavior: 'smooth'});
+      
+      if(step === 3){
+        window.addEventListener('scroll', handleStickyButton);
+      } else {
+        stickyBtnWrap.classList.remove('show');
+        window.removeEventListener('scroll', handleStickyButton);
+      }
     }
 
     function handleStickyButton(){
       const stickyBtnWrap = document.getElementById('stickyBtnWrap');
-      if(window.scrollY > 300 && currentStep === 3 && screenshotFile){ stickyBtnWrap.classList.add('show'); } 
-      else { stickyBtnWrap.classList.remove('show'); }
+      if(window.scrollY > 300 && currentStep === 3 && screenshotFile){
+        stickyBtnWrap.classList.add('show');
+      } else {
+        stickyBtnWrap.classList.remove('show');
+      }
     }
 
     function updateProgress(){
@@ -1029,7 +1086,6 @@
     }
 
     applyStoreTiming();
-
     document.querySelectorAll('.pack-card').forEach(card => {
         if(isPackPurchased(card.dataset.uc)) card.classList.add('purchased');
         card.addEventListener('click', function(){
@@ -1064,13 +1120,17 @@
       this.value = this.value.replace(/\D/g, '').slice(0,12);
       const len = this.value.length;
       const isValid = len >= 9 && len <= 12;
+      
       if(isValid){
           uidInput.classList.add('valid');
           uidInput.classList.remove('invalid');
           uidIcon.className = 'input-icon check fas fa-check-circle';
           uidError.classList.remove('show');
           triggerHaptic('light');
-      } else { uidInput.classList.remove('valid'); uidIcon.className = ''; }
+      } else {
+          uidInput.classList.remove('valid');
+          uidIcon.className = '';
+      }
       document.getElementById('next2').disabled = !(isValid && ignInput.value.trim().length >= 2);
     });
 
@@ -1078,16 +1138,23 @@
         const isValid = this.value.trim().length >= 2;
         const uidLen = uidInput.value.length;
         const isUidValid = uidLen >= 9 && uidLen <= 12;
+        
         if(isValid){
           ignInput.classList.add('valid');
           ignIcon.className = 'input-icon check fas fa-check-circle';
           triggerHaptic('light');
-        } else { ignInput.classList.remove('valid'); ignIcon.className = ''; }
+        } else {
+          ignInput.classList.remove('valid');
+          ignIcon.className = '';
+        }
         document.getElementById('next2').disabled = !(isValid && isUidValid);
     });
 
     document.getElementById('back2').onclick = () => showStep(1);
-    document.getElementById('back3').onclick = () => { if(qrTimer) clearInterval(qrTimer); showStep(2); };
+    document.getElementById('back3').onclick = () => {
+      if(qrTimer) clearInterval(qrTimer);
+      showStep(2);
+    };
 
     document.getElementById('copyUpiBtn').onclick = async function(){
       triggerHaptic('light');
@@ -1103,11 +1170,11 @@
     document.getElementById('next2').onclick = function(){
       const amountEl = document.getElementById('paymentAmount');
       amountEl.textContent = '₹' + selectedPack.price;
+      amountEl.style.animation = 'countUp .5s ease';
       orderId = generateOrderId();
       document.getElementById('upiIdText').textContent = UPIVPA;
-      showStep(3);
-      // Fix: Render QR after showing the step
       renderUpiQr(buildUpiUri(UPIVPA, UPI_NAME, selectedPack.price, `Order ${orderId}`));
+      showStep(3);
     };
 
     const fileInput = document.getElementById('screenshot');
@@ -1151,12 +1218,17 @@
           }, 20);
         };
         reader.readAsDataURL(file);
-      } else { alert("File too large. Please upload under 5MB."); }
+      } else {
+        alert("File too large. Please upload under 5MB.");
+      }
     }
 
     document.getElementById('orderForm').onsubmit = async (e) => {
       e.preventDefault();
-      if(!screenshotFile) { alert("Please upload a payment screenshot first."); return; }
+      if(!screenshotFile) {
+          alert("Please upload a payment screenshot first.");
+          return;
+      }
       submitBtn.disabled = true;
       stickySubmitBtn.disabled = true;
       submitBtn.classList.add('loading');
@@ -1189,6 +1261,7 @@
         submitBtn.classList.remove('loading');
       }
     };
+    setTimeout(showSocialProof, 3000);
   </script>
 </body>
 </html>
